@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layout/default">
+<body>
+<div id="page" layout:fragment="content">
+	<h1 style="text-align:center"><u>AdminPanel</u></h1>
+	<div style="background-color:grey">
+		<h3><u>Products Information</u></h3>
+		<div id="products_details" style="height:55%;background-color:magenta">
+		<ul>
+			<li style="display:block"><a href="/product/new">Insert Product</a></li>
+			<li style="display:block"><a href="#">View Product Details</a></li>
+			<li style="display:block"><a href="#">View Sells Details</a></li>
+			<li style="display:block"><a href="#">View Order Details</a></li>
+		</ul>
+		</div>
+		<h3><u>Users Information</u></h3>
+		<div id="user_details" style="height:45%;background-color:blue">
+			<ul>
+				<li style="display:block"><a href="#">View Customer Details</a></li>
+				<li style="display:block"><a href="#">View Admin Details</a></li>
+			</ul>
+		</div>
+	</div>
+
+</div>
+</body>
+</html>

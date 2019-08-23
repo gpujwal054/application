@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layout/default">
+<body>
+<div id="page" layout:fragment="content">
+	<div class="products">
+		<h3 class="col-md-6">Insert into products</h3>
+		<div>
+			<form class="form-horizontal" th:object="${product}" th:action="@{/product}" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					<label class="col-md-6">Product Name</label>
+					<div class="col-md-6">
+						<input type="text" class="form-control" th:field="*{productName}" placeholder="Enter product name">
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label class="col-md-6">Product Description</label>
+					<div class="col-md-6">
+						<input type="text" class="form-control" th:field="*{description}" placeholder="Enter product description">
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label class="col-md-6">Product Price</label>
+					<div class="col-md-6">
+						<input type="number" class="form-control" th:field="*{price}" placeholder="Enter product price">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-6">Product Image</label>
+					<div class="col-md-6">
+						<input type="file" th:field="*{imageUrl}">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

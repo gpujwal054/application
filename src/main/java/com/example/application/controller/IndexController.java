@@ -28,10 +28,6 @@ public class IndexController {
     String about(){
         return "about";
     }
-    @RequestMapping("/products")
-    String products(){
-        return "products";
-    }
     @RequestMapping("/admin/login")
     String admin_login(Model model){
         model.addAttribute("admin",new Admin());

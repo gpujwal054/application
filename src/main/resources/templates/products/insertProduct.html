@@ -4,8 +4,11 @@
 	  layout:decorator="layout/default">
 <body>
 <div id="page" layout:fragment="content">
-	<div class="products">
-		<h3 class="col-md-6">Insert into products</h3>
+	<div style="float:left;width:25%">
+		<sidebar th:replace="fragments/sidebar :: sidebar"></sidebar>
+	</div>
+	<div style="float:left;width:75%">
+		<h3 class="col-md-6" style="text-align:center">Insert into products</h3>
 		<div>
 			<form class="form-horizontal" th:object="${product}" th:action="@{/product}" method="post" enctype="multipart/form-data">
 				<div class="form-group">
@@ -33,6 +36,10 @@
 					<div class="col-md-6">
 						<input type="file" th:field="*{imageUrl}">
 					</div>
+				</div>
+				<div th:if="${message}" th:class="${'form-group alert alert-dismissible fade show ' + alertClass}">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong th:if="${message}" th:text="${message}"></strong>
 				</div>
 				<div class="col-md-6">
 					<button type="submit" class="btn btn-primary">Submit</button>

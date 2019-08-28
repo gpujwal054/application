@@ -3,6 +3,9 @@ package com.example.application.repositories;
 import com.example.application.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductRepository extends JpaRepository<Product,Integer> {
+import java.util.List;
+
+public interface ProductRepository extends JpaRepository<Product, Integer> {
+       List<Product> findAll();
 
 }

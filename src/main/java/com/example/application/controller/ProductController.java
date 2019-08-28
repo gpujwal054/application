@@ -9,17 +9,21 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ProductController {
     @Autowired
     private ProductRepository prodRepo;
     //store uploaded file to this folder
-    private static String upload_dir =System.getProperty("user.dir")+ "/upload/";
+//    private static String upload_dir = System.getProperty("user.dir") + "/upload/";
+    private static String upload_dir = System.getProperty("user.dir") + "/src/main/resources/static/images/";
 
 
     @RequestMapping("product/new")
@@ -47,9 +51,29 @@ public class ProductController {
             }
         }
         prodRepo.save(product);
-        modelMap.put("message", "Please select the file");
+        modelMap.put("message", "Product inserted successfully");
         modelMap.put("files", fileNames);
         return "products/insertProduct";
     }
 
+    @RequestMapping(value = "/products", method = RequestMethod.GET)
+    public ModelAndView Products(Model model) {
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        List<Product> list = prodRepo.findAll();
+
+        modelAndView.addObject("productList", list);
+        modelAndView.setViewName("products");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/product/show", method = RequestMethod.GET)
+    public ModelAndView showProduct(Model model) {
+        ModelAndView modelAndView = new ModelAndView();
+        List<Product> list = prodRepo.findAll();
+        modelAndView.addObject("productList", list);
+        modelAndView.setViewName("products/showProducts");
+        return modelAndView;
+    }
 }

@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ public class ProductController {
     @Autowired
     private ProductRepository prodRepo;
     //store uploaded file to this folder
-//    private static String upload_dir = System.getProperty("user.dir") + "/upload/";
     private static String upload_dir = System.getProperty("user.dir") + "/src/main/resources/static/images/";
 
 
@@ -30,6 +28,30 @@ public class ProductController {
     public String newProduct(Model model) {
         model.addAttribute("product", new Product());
         return "products/insertProduct";
+    }
+
+    @RequestMapping("product/edit/{id}")
+    public String edit(@PathVariable Integer id, Model model, ModelMap modelMap) {
+        model.addAttribute("product", prodRepo.getProductById(id));
+        modelMap.put("message", "Product updated successfully");
+        return "products/insertProduct";
+    }
+
+    @RequestMapping("product/delete/{id}")
+    public String delete(@PathVariable Integer id, ModelMap modelMap) {
+        try {
+            File file = new File(upload_dir + prodRepo.getProductById(id).getImageName());
+            if (file.delete()) {
+                System.out.println(file.getName() + " is deleted!");
+            } else {
+                System.out.println("Delete operation is failed.");
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to Delete image !!");
+        }
+        prodRepo.deleteById(id);
+        modelMap.put("message", "Product deleted successfully");
+        return "products/showProducts";
     }
 
     @PostMapping("product")
@@ -51,6 +73,7 @@ public class ProductController {
             }
         }
         prodRepo.save(product);
+        product = new Product();
         modelMap.put("message", "Product inserted successfully");
         modelMap.put("files", fileNames);
         return "products/insertProduct";

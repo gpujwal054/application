@@ -12,24 +12,28 @@
 		<h2>Product List</h2>
 		<table class="table table-striped">
 			<tr>
-				<th>Id</th>
+				<th>S.N</th>
 				<th>Product Name</th>
 				<th>Description</th>
 				<th>Price</th>
 				<th>Image</th>
-				<th>View</th>
 				<th>Edit</th>
+				<th>Delete</th>
 			</tr>
-			<tr th:each="product : ${productList}">
-				<td th:text="${product.id}"><a href="/product/${product.id}">Id</a></td>
-				<td th:text="${product.productName}">Product Name</td>
-				<td th:text="${product.description}">Description</td>
-				<td th:text="${product.price}">Price</td>
-				<td><img th:src="${'/images/'+product.imageName}" style="width:75%;height:50%"></td>
-				<td><a th:href="${ '/product/' + product.id}">View</a></td>
+			<tr th:each="product,iterator : ${productList}">
+				<td th:text="${iterator.index+1}"></td>
+				<td th:text="${product.productName}"></td>
+				<td th:text="${product.description}"></td>
+				<td th:text="${product.price}"></td>
+				<td><img th:src="${'/images/'+product.imageName}" style="width:150px;height:100px"></td>
 				<td><a th:href="${'/product/edit/' + product.id}">Edit</a></td>
+				<td><a th:href="${'/product/delete/' + product.id}">Delete</a></td>
 			</tr>
 		</table>
+		<div th:if="${message}" th:class="${'form-group alert alert-dismissible fade show ' + alertClass}">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong th:if="${message}" th:text="${message}"></strong>
+		</div>
 	</div>
 	</div>
 </div>

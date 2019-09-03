@@ -4,21 +4,23 @@
 	  layout:decorator="layout/default">
 <body>
 <div id="page" layout:fragment="content">
-	<div th:if="${not #lists.isEmpty(productList)}">
-		<div th:each="product : ${productList}" class="card" style="width:18rem;">
-		<img th:src="${'/images/'+product.imageName}" style="width:75%;height:50%">
-		<div class="card-body" th:each="product : ${productList}">
-			<ul class="list-inline">
-				<li class="list-inline-item">
-					Name:<h6 th:text="${product.productName}"></h6>
-				</li>
-				<li class="list-inline-item">
-					Price:<h6 th:text="${product.price}"></h6>
-				</li>
-			</ul>
-			Description:<p th:text="${product.description}" class="text-justify"></p>
-			<a href="#" class="btn btn-primary">Add To Cart</a>
-		</div>
+	<div class="row">
+		<div class="col-md-3" th:each="product : ${productList}" >
+			<div class="card" style="width:18rem;" >
+				<img th:src="${'/images/'+product.imageName}" style="width:auto;height:150px">
+				<div class="card-body">
+					<ul class="list-inline">
+						<li class="list-inline-item">
+							Name:<h6 th:text="${product.productName}"></h6>
+						</li>
+						<li class="list-inline-item">
+							Price:<h6 th:text="${product.price}"></h6>
+						</li>
+					</ul>
+					Description:<p th:text="${product.description}" class="text-justify"></p>
+					<a href="#" class="btn btn-primary">Add To Cart</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

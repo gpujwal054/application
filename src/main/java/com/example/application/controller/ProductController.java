@@ -1,6 +1,8 @@
 package com.example.application.controller;
 
+import com.example.application.model.Category;
 import com.example.application.model.Product;
+import com.example.application.repositories.CategoryRepository;
 import com.example.application.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +11,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +20,10 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductRepository prodRepo;
+
+    @Autowired
+    private CategoryRepository catRepo;
+
     //store uploaded file to this folder
     private static String upload_dir = System.getProperty("user.dir") + "/src/main/resources/static/images/";
 
@@ -27,6 +31,9 @@ public class ProductController {
     @RequestMapping("product/new")
     public String newProduct(Model model) {
         model.addAttribute("product", new Product());
+        List<Category> categoryList = catRepo.findAll();
+
+        model.addAttribute("categoryList",categoryList);
         return "products/insertProduct";
     }
 
@@ -34,6 +41,7 @@ public class ProductController {
     public String edit(@PathVariable Integer id, Model model, ModelMap modelMap) {
         model.addAttribute("product", prodRepo.getProductById(id));
         modelMap.put("message", "Product updated successfully");
+        modelMap.put("alertClass", "alert-danger");
         return "products/insertProduct";
     }
 
@@ -75,6 +83,7 @@ public class ProductController {
         prodRepo.save(product);
         product = new Product();
         modelMap.put("message", "Product inserted successfully");
+        modelMap.put("alertClass", "alert-danger");
         modelMap.put("files", fileNames);
         return "products/insertProduct";
     }

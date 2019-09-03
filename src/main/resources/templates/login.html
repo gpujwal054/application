@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layout/default">
+<body>
+<div id="page" layout:fragment="content">
+	<div class="offset-1">
+		<div class="alert alert-dismissable alert-danger bad-login"
+			 th:if="${errors != null and not #lists.isEmpty(errors)}">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<!--/*/ <th-block data-th-each="error : ${errors}"> /*/-->
+			<p th:text="${error}" class="m-0">|Error message here.|</p>
+			<!--/*/ </th-block> /*/-->
+		</div>
+		<div th:if="${param.error}" class="alert alert-dismissable alert-danger">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<p th:if="${error}" th:text="${error}" class="m-0">No error</p>
+		</div>
+		<form th:action="login" method="post">
+			<div class="form-group row">
+				<label class="col-md-2">Email</label>
+				<div class="col-md-5">
+					<input type="text" class="form-control" name="username" placeholder="Enter your email">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-md-2">Password</label>
+				<div class="col-md-5">
+					<input type="password" class="form-control" name="password" placeholder="Enter your password">
+				</div>
+			</div>
+			<div th:if="${message}" th:class="${'form-group alert alert-dismissible fade show ' + alertClass}">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong th:if="${message}" th:text="${message}"></strong>
+			</div>
+			<div class="form-group row">
+				<label class="col-md-2"></label>
+				<div class="col-md-5">
+					<button type="submit" class="btn btn-primary">Sign In</button>
+				</div>
+			</div>
+		</form>
+		<div class="form-group row">
+			<label class="col-md-2"></label>
+			<div class="col-md-5">
+				<p>If you are not user,<a href="/register">Sign Up</a>here!</p>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

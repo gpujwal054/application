@@ -4,7 +4,33 @@
 	  layout:decorator="layout/default">
 <body>
 <div id="page" layout:fragment="content">
-	<p>Contact</p>
+	<div style="width:65%;float:left">
+		<div>
+			<h3>Email:onlinemart33@gmail.com</h3><br>
+			<h3>Address:Lakeside-pokhara</h3>
+			<h3>Contact:061-538869</h3>
+		</div>
+	</div>
+	<div style="width:35%;float:right">
+		<h3>Leave your message!</h3>
+		<form>
+			<div class="form-group">
+				<label for="exampleInputEmail">Email address</label>
+				<input type="email" class="form-control" id="exampleInputEmail" placeholder="Enter email" required="" />
+			</div>
+			<div class="form-group">
+				<label for="exampleInputName">Name</label>
+				<input type="text" class="form-control" id="exampleInputName" placeholder="Enter name" required="" />
+			</div>
+			<div class="form-group">
+				<label>Message</label>
+			</div>
+			<textarea type="text" rows="5" cols="50" placeholder="Enter your message"></textarea>
+			<div class="col-md-0">
+				<button type="submit" class="btn btn-primary">Send</button>
+			</div>
+		</form>
+	</div>
 </div>
 </body>
 </html>

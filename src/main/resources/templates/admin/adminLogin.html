@@ -7,9 +7,9 @@ ${message}
 <div id="page" layout:fragment="content">
 	<form th:action="@{/admin}" th:object="${admin}" method="post">
 		<div class="form-group">
-			<label class="col-md-5">Email or Username</label>
+			<label class="col-md-5">Email</label>
 			<div class="col-md-5">
-				<input type="email" class="form-control" th:field="*{adminEmail}" placeholder="Enter your username">
+				<input type="email" class="form-control" th:field="*{email}" placeholder="Enter your email">
 			</div>
 		</div>
 		<div class="form-group">
@@ -26,7 +26,7 @@ ${message}
 			<button type="submit" class="btn btn-primary">Sign In</button>
 		</div>
 	</form>
-	<div>
+	<div class="col-md-5">
 		<p>If you are not admin,<a href="/admin/signUp">Sign Up</a>here!</p>
 	</div>
 </div>

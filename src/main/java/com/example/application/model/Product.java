@@ -14,6 +14,8 @@ public class Product {
     @NotEmpty
     private String productName;
     @NotEmpty
+    private String productCat;
+    @NotEmpty
     private String description;
     @Transient
     private MultipartFile[] imageUrl;
@@ -35,6 +37,14 @@ public class Product {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public String getProductCat() {
+        return productCat;
+    }
+
+    public void setProductCat(String productCat) {
+        this.productCat = productCat;
     }
 
     public String getDescription() {

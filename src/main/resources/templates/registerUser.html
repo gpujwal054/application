@@ -5,44 +5,44 @@
 
 <body>
 <div id="page" layout:fragment="content">
-	<h2 style="text-align:center">Register your account here</h2>
+	<h3>Register your account here</h3>
 	<div class="offset-1">
-		<form th:action="@{/admin}" th:object="${admin}" method="post">
-			<div class="form-group">
-				<label class="col-md-5">Username</label>
+		<form th:action="@{/register}" th:object="${user}" method="post">
+			<div class="form-group row">
+				<label class="col-md-2">User Name</label>
 				<div class="col-md-5">
-					<input type="text" class="form-control" th:field="*{adminName}" placeholder="Enter your username">
+					<input type="text" class="form-control" th:field="*{username}" placeholder="Enter your username">
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label class="col-md-5">Name</label>
+			<div class="form-group row">
+				<label class="col-md-2">First Name</label>
 				<div class="col-md-5">
-					<input type="text" class="form-control" th:field="*{name}" placeholder="Enter your name">
+					<input type="text" class="form-control" th:field="*{firstName}" placeholder="Enter your first name">
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label class="col-md-5">Last Name</label>
+			<div class="form-group row">
+				<label class="col-md-2">Last Name</label>
 				<div class="col-md-5">
 					<input type="text" class="form-control" th:field="*{lastName}" placeholder="Enter your last name">
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label class="col-md-5">Email</label>
+			<div class="form-group row">
+				<label class="col-md-2">Email</label>
 				<div class="col-md-5">
 					<input type="email" class="form-control" th:field="*{email}" placeholder="Enter your email">
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-md-5">Password</label>
+			<div class="form-group row">
+				<label class="col-md-2">Password</label>
 				<div class="col-md-5">
 					<input type="password" class="form-control" th:field="*{password}" placeholder="Enter your password">
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-md-5">Password</label>
+			<div class="form-group row">
+				<label class="col-md-2">Confirm Password</label>
 				<div class="col-md-5">
 					<input type="password" class="form-control" th:field="*{passwordConf}" placeholder="Confirm your password">
 				</div>
@@ -52,8 +52,11 @@
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				<strong th:if="${message}" th:text="${message}"></strong>
 			</div>
-			<div class="col-md-5">
-				<button type="submit" class="btn btn-primary">Sign Up</button>
+			<div class="form-group row">
+				<label class="col-md-2"></label>
+				<div class="col-md-5">
+					<button type="submit" class="btn btn-primary">Sign Up</button>
+				</div>
 			</div>
 		</form>
 	</div>

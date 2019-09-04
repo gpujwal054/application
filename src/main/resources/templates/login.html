@@ -16,6 +16,8 @@
 			<button type="button" class="close" data-dismiss="alert">&times;</button>
 			<p th:if="${error}" th:text="${error}" class="m-0">No error</p>
 		</div>
+		<h1 class="text-center">Login your account</h1><br>
+		<div class="offset-3">
 		<form th:action="login" method="post">
 			<div class="form-group row">
 				<label class="col-md-2">Email</label>
@@ -40,8 +42,9 @@
 				</div>
 			</div>
 		</form>
+		</div>
 		<div class="form-group row">
-			<label class="col-md-2"></label>
+			<label class="col-md-4"></label>
 			<div class="col-md-5">
 				<p>If you are not user,<a href="/register">Sign Up</a>here!</p>
 			</div>

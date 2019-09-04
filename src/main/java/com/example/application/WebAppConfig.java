@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -21,56 +22,45 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-//@EnableGlobalMethodSecurity
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebAppConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
+    @Bean("authenticationManager")
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception{
+        return super.authenticationManagerBean();
+    }
+    @Bean
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
+        return new MySimplerAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(final HttpSecurity http) throws Exception{
+        http.authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .failureUrl("/login?error=true")
+                .loginProcessingUrl("/login")
+                .successHandler(myAuthenticationSuccessHandler())
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login");
+    }
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .and()
-                    .csrf()
-                    .disable()
-
-                    .authorizeRequests()
-                    //assets
-                    .antMatchers(
-                            "/vendor/bootstrap/js/**",
-                            "/vendor/bootstrap/css/**",
-                            "/vendor/jquery/**",
-                            "/vendor/chart.js/**",
-                            "/vendor/jquery.cookie/**",
-                            "/vendor/jquery-validation/**",
-                            "/vendor/popper.js/**"
-                    ).permitAll()
-                    .antMatchers("/img/**", "/css/**", "/js/**", "/fonts/**").permitAll()
-                    //pages
-                    .antMatchers("/", "/register", "/login", "/activate","/endpoints","/actuator/**").permitAll()
-                    .anyRequest().authenticated()
-                .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .failureUrl("/login?error=true")
-                    .defaultSuccessUrl("/home")
-                    .permitAll()
-                .and()
-                    .logout()
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/login")
-                .and()
-                    .rememberMe()
-                    .tokenValiditySeconds(60 * 60)
-                .and()
-                    .exceptionHandling()
-                    .accessDeniedPage("/access_denied");
-    }
 
     @Bean
     @Description("Thymeleaf template resolver serving HTML 5")
@@ -98,7 +88,7 @@ public class WebAppConfig extends WebSecurityConfigurerAdapter implements WebMvc
     public SpringSecurityDialect springSecurityDialect(){
         return new SpringSecurityDialect();
     }
-
+//
     @Bean
     @Description("Thymeleaf view resolver")
     public ViewResolver viewResolver() {
@@ -110,17 +100,10 @@ public class WebAppConfig extends WebSecurityConfigurerAdapter implements WebMvc
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/").setViewName("login");
         registry.addRedirectViewController("/", "/login");
     }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-
-    @Bean
+    @Bean("authenticationManager")
     public AuthenticationManager customAuthenticationManager() throws Exception {
         return authenticationManager();
     }

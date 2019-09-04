@@ -8,16 +8,24 @@ import java.util.List;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "role_id",columnDefinition = "serial")
+    @Column(name = "role_id", columnDefinition = "serial")
     private Integer id;
-    @Column(name = "role",unique = true)
-    private String role;
+    @Column(name = "role", unique = true)
+    private String roleName;
 
-    @ManyToMany(cascade = CascadeType.ALL,mappedBy = "roles")
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles")
     private Collection<User> users;
 
     @ManyToMany
-    @JoinTable(name = "roles_privileges",joinColumns = @JoinColumn(name = "role_id"),inverseJoinColumns = @JoinColumn(name = "privilege_id"))
+    @JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "privilege_id"))
 
     private List<Privilege> privileges;
 
@@ -29,13 +37,6 @@ public class Role {
         this.id = id;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public Collection<User> getUsers() {
         return users;

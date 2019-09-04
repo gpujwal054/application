@@ -54,6 +54,17 @@ public class UserController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    public ModelAndView admin(Authentication authentication){
+        ModelAndView modelAndView = new ModelAndView();
+        User user = new User();
+        modelAndView.addObject("user",user);
+        modelAndView.setViewName("admin");
+        UserDetails userDetail = (UserDetails) authentication.getPrincipal();
+        User current_user = userRepository.findByUsername(userDetail.getUsername());
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/register",method = RequestMethod.GET)
     public ModelAndView register(){
         ModelAndView modelAndView = new ModelAndView();
@@ -64,15 +75,17 @@ public class UserController {
     }
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private static final String USER_ROLE = "ROLE_USER";
+    private static final String USER_ROLE = "ROLE_ADMIN";
     @PostMapping("/register")
     public String saveUser(@ModelAttribute User user, ModelMap modelMap) {
         if (user.getPassword().equals(user.getPasswordConf())) {
             user.setActive(1);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            // Set Role to ROLE_USER
 
-            Role role = roleRepository.findByRole("ADMIN");
+            // Set Role to ROLE_ADMIN
+          // Role role = roleRepository.findByRoleName("ADMIN");
+            // Set Role to ROLE_USER
+            Role role = roleRepository.findByRoleName("USER");
             user.setRoles(role);
             user.setEnabled(true);
             userRepository.save(user);

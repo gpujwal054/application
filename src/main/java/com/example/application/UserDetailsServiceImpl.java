@@ -6,19 +6,18 @@ import com.example.application.model.User;
 import com.example.application.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService{
+public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
@@ -26,24 +25,18 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) {
 
-        try{
+        try {
             User user = userRepository.findByUsername(username);
             if (user == null) throw new UsernameNotFoundException(username);
 
             return new org.springframework.security.core.userdetails.User(
                     user.getEmail(), user.getPassword(), user.isEnabled(), true, true,
-                    true, getAuthorities(Arrays.asList(user.getRoles())));
+                    true, getAuthorities(user));
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return null;
         }
-    }
-
-    private Collection<? extends GrantedAuthority> getAuthorities(
-            Collection<Role> roles) {
-        return getGrantedAuthorities(getPrivileges(roles));
     }
 
     private List<String> getPrivileges(Collection<Role> roles) {
@@ -59,11 +52,10 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         return privileges;
     }
 
-    private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (String privilege : privileges) {
-            authorities.add(new SimpleGrantedAuthority(privilege));
-        }
+    private static Collection<? extends GrantedAuthority> getAuthorities(User user) {
+        String[] userRoles = new String[1];
+        userRoles[0] = user.getRoles().getRoleName();
+        Collection<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(userRoles);
         return authorities;
     }
 }

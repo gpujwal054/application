@@ -11,12 +11,13 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Arrays;
 import java.util.List;
 
 public class InitialDataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
-    boolean alreadySetup= false;
+    boolean alreadySetup = false;
 
     @Autowired
     UserRepository userRepository;
@@ -29,16 +30,16 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
     @Override
     @Transactional
-    public void onApplicationEvent(ContextRefreshedEvent event){
+    public void onApplicationEvent(ContextRefreshedEvent event) {
         if (alreadySetup)
             return;
         Privilege readPrivilege = createPrivilegeIfNotFound("READ_PRIVILEGE");
         Privilege writePrivilege = createPrivilegeIfNotFound("WRITE_PRIVILEGE");
-        List<Privilege> adminPrivileges = Arrays.asList(readPrivilege,writePrivilege);
-        createRoleIfNotFound("ROLE_ADMIN",adminPrivileges);
-        createRoleIfNotFound("ROLE_USER",Arrays.asList(readPrivilege));
+        List<Privilege> adminPrivileges = Arrays.asList(readPrivilege, writePrivilege);
+        createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
+        createRoleIfNotFound("ROLE_USER", Arrays.asList(readPrivilege));
 
-        Role adminRole =roleRepository.findByRole("ROLE_ADMIN");
+        Role adminRole = roleRepository.findByRoleName("ROLE_ADMIN");
         User user = new User();
         user.setFirstName("Test");
         user.setLastName("Test");
@@ -50,9 +51,9 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
     }
 
     @Transactional
-    private Privilege createPrivilegeIfNotFound(String name){
-       Privilege privilege = privilegeRepository.findByName(name);
-        if (privilege == null){
+    private Privilege createPrivilegeIfNotFound(String name) {
+        Privilege privilege = privilegeRepository.findByName(name);
+        if (privilege == null) {
             privilege = new Privilege();
             privilege.setName(name);
             privilegeRepository.save(privilege);
@@ -61,11 +62,11 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
     }
 
     @Transactional
-    private Role createRoleIfNotFound(String name,List<Privilege> privileges){
-        Role role = roleRepository.findByRole(name);
-        if (role == null){
+    private Role createRoleIfNotFound(String name, List<Privilege> privileges) {
+        Role role = roleRepository.findByRoleName(name);
+        if (role == null) {
             role = new Role();
-            role.setRole("ADMIN");
+            role.setRoleName("ADMIN");
             role.setPrivileges(privileges);
             roleRepository.save(role);
         }

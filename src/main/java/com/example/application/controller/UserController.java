@@ -54,12 +54,12 @@ public class UserController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public ModelAndView admin(Authentication authentication){
         ModelAndView modelAndView = new ModelAndView();
         User user = new User();
         modelAndView.addObject("user",user);
-        modelAndView.setViewName("admin");
+        modelAndView.setViewName("dashboard");
         UserDetails userDetail = (UserDetails) authentication.getPrincipal();
         User current_user = userRepository.findByUsername(userDetail.getUsername());
         return modelAndView;

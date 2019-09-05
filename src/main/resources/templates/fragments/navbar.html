@@ -1,4 +1,4 @@
-<header th:fragment="navbar" xmlns:th="http://www.w3.org/1999/xhtml">
+<header th:fragment="navbar" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 	<!-- Fixed navbar -->
 	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 		<a class="navbar-brand" href="/">Online Mart</a>
@@ -7,27 +7,27 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarCollapse">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active">
+				<li sec:authorize="isAuthenticated()" class="nav-item active">
 					<a class="nav-link" href="/home" style="color:orange">Home<span class="sr-only">(current)</span></a>
 				</li>
-				<li class="nav-item">
+				<li sec:authorize="isAuthenticated()" class="nav-item">
 					<a class="nav-link" href="/about" style="color:orange">About</a>
 				</li>
-				<li class="nav-item">
+				<li sec:authorize="isAuthenticated()" class="nav-item">
 					<a class="nav-link" href="/products" style="color:orange">Products</a>
 				</li>
-				<li class="nav-item">
+				<li sec:authorize="isAuthenticated()" class="nav-item">
 					<a class="nav-link" href="/contact" style="color:orange">Contact</a>
 				</li>
 			</ul>
 
 
-			<form class="form-inline mt-2 mt-md-0">
+			<form sec:authorize="isAuthenticated()" class="form-inline mt-2 mt-md-0">
 				<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				<button class="btn btn-outline-success mr-1 my-2 my-sm-0" type="submit">Search</button>
 			</form>
 			<div>
-				<a class="btn btn-default" href="/logout">Logout</a>
+				<a sec:authorize="isAuthenticated()" class="btn btn-info" href="/logout">Logout</a>
 			</div>
 		</div>
 	</nav>

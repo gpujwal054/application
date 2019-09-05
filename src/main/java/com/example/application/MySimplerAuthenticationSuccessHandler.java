@@ -49,7 +49,7 @@ public class MySimplerAuthenticationSuccessHandler implements AuthenticationSucc
         if (isUser){
             return "/home";
         } else if (isAdmin){
-            return "/admin";
+            return "/dashboard";
         } else {
             throw new IllegalStateException();
         }

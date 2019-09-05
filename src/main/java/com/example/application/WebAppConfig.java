@@ -45,7 +45,7 @@ public class WebAppConfig extends WebSecurityConfigurerAdapter implements WebMvc
     @Override
     protected void configure(final HttpSecurity http) throws Exception{
         http.authorizeRequests()
-                .antMatchers("/login","/register","/css/*").permitAll()
+                .antMatchers("/login","/role","/register","/css/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

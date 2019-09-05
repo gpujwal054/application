@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class ProductController {
         model.addAttribute("product", new Product());
         List<Category> categoryList = catRepo.findAll();
 
-        model.addAttribute("categoryList",categoryList);
+        model.addAttribute("categoryList", categoryList);
         return "products/insertProduct";
     }
 
@@ -80,6 +81,7 @@ public class ProductController {
                 }
             }
         }
+        product.setCategory(catRepo.getCategoryById(product.getProductCat()));
         prodRepo.save(product);
         product = new Product();
         modelMap.put("message", "Product inserted successfully");

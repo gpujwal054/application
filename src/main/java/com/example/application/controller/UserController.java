@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -83,7 +84,7 @@ public class UserController {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
 
             // Set Role to ROLE_ADMIN
-          // Role role = roleRepository.findByRoleName("ADMIN");
+//           Role role = roleRepository.findByRoleName("ADMIN");
             // Set Role to ROLE_USER
             Role role = roleRepository.findByRoleName("USER");
             user.setRoles(role);
@@ -98,4 +99,14 @@ public class UserController {
             return "registerUser";
         }
     }
+
+    @RequestMapping(value = "/user/show", method = RequestMethod.GET)
+    public ModelAndView showUser(Model model) {
+        ModelAndView modelAndView = new ModelAndView();
+        List<User> list = userRepository.findAll();
+        modelAndView.addObject("userList", list);
+        modelAndView.setViewName("users/showUsers");
+        return modelAndView;
+    }
+
 }

@@ -10,7 +10,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "role_id", columnDefinition = "serial")
     private Integer id;
-    @Column(name = "role", unique = true)
+    @Column(name = "role_name", unique = true)
     private String roleName;
 
     public String getRoleName() {

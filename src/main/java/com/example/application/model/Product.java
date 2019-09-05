@@ -1,6 +1,7 @@
 package com.example.application.model;
 
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -10,18 +11,34 @@ import java.math.BigDecimal;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "product_id", columnDefinition = "serial")
     private Integer id;
     @NotEmpty
+    @Column(name = "product_name")
     private String productName;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
     @NotEmpty
-    private String productCat;
-    @NotEmpty
+    @Column(name = "product_description")
     private String description;
     @Transient
     private MultipartFile[] imageUrl;
+    @Column(name = "product_image")
     private String imageName;
     @Min(1)
+    @Column(name = "product_price")
     private BigDecimal price;
+    @Transient
+    private int productCat;
+
+    public int getProductCat() {
+        return productCat;
+    }
+
+    public void setProductCat(int productCat) {
+        this.productCat = productCat;
+    }
 
     public Integer getId() {
         return id;
@@ -31,6 +48,7 @@ public class Product {
         this.id = id;
     }
 
+
     public String getProductName() {
         return productName;
     }
@@ -39,12 +57,13 @@ public class Product {
         this.productName = productName;
     }
 
-    public String getProductCat() {
-        return productCat;
+
+    public Category getCategory() {
+        return category;
     }
 
-    public void setProductCat(String productCat) {
-        this.productCat = productCat;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getDescription() {

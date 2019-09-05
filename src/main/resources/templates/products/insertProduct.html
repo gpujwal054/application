@@ -21,7 +21,7 @@
 				<div class="form-group dropdown">
 					<label class="col-md-6">Product Category</label>
 					<div class="col-md-6">
-						<select class="form-control">
+						<select class="form-control" th:field="*{productCat}">
 							<option th:each="category : ${categoryList}" th:value="${category.id}" th:text = "${category.categoryName}"></option>
 						</select>
 					</div>
@@ -34,7 +34,7 @@
 
 				</div>
 				<div class="form-group">
-					<label class="col-md-6">Product Price</label>
+					<label class="col-md-6">Product Price(Rs.)</label>
 					<div class="col-md-6">
 						<input type="number" class="form-control" th:field="*{price}" placeholder="Enter product price">
 					</div>

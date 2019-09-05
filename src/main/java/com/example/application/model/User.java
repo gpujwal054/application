@@ -14,12 +14,12 @@ public class User {
     @Column(name = "user_id",columnDefinition = "serial")
     private Integer id;
 
-    @Column(name = "email",unique = true,nullable = false)
+    @Column(name = "user_email",unique = true,nullable = false)
     @Email(message = "*Please provide a valid email")
     @NotEmpty(message = "*Please provide an email")
     private String email;
 
-    @Column(name = "password",nullable = false)
+    @Column(name = "user_password",nullable = false)
     @Length(min = 6,message = "*Your password must have six character")
     @NotEmpty(message = "*Please provide your password")
     @JsonIgnore

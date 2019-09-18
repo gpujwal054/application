@@ -3,11 +3,12 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head th:replace="fragments/header :: head">
 	<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}">
+
 </head>
 <body>
 	<header th:replace="fragments/navbar :: navbar"></header>
-	<div class="bodyContainer mb-5">
-		<div layout:fragment="content" style="margin-top:15px;margin-bottom:60px"></div>
+	<div class="bodyContainer">
+		<div layout:fragment="content"></div>
 	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
 </body>

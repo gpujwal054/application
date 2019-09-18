@@ -5,7 +5,7 @@
 <body>
 <div id="page" layout:fragment="content">
 	<div class="row">
-		<div class="col-md-3" th:each="product : ${productList}" >
+		<div class="col-md-3 mb-2" th:each="product : ${productList}" >
 			<div class="card h-100" style="width:18rem;" >
 				<img th:src="${'/images/'+product.imageName}" style="width:auto;height:150px">
 				<div class="card-body">
@@ -18,7 +18,7 @@
 						</li>
 					</ul>
 					Description:<p th:text="${product.description}" class="text-justify"></p>
-					<a href="#" class="btn btn-primary">Add To Cart</a>
+					<a th:href="${'/cart/' + product.id}" class="btn btn-primary">Add To Cart</a>
 				</div>
 			</div>
 		</div>

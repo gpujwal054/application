@@ -40,9 +40,15 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="col-md-6">Product Quantity</label>
+					<div class="col-md-6">
+						<input type="text" class="form-control" th:field="*{productQuantity}" placeholder="Enter product quantity">
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="col-md-6">Product Image</label>
 					<div class="col-md-6">
-						<input type="file" th:field="*{imageUrl}">
+						<input type="file" th:field="*{imageUrl}" onchange="compress()">
 					</div>
 				</div>
 				<div th:if="${message}" th:class="${'form-group alert alert-dismissible fade show ' + alertClass}">
@@ -50,11 +56,40 @@
 					<strong th:if="${message}" th:text="${message}"></strong>
 				</div>
 				<div class="col-md-6">
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button id="insertProd" type="submit" class="btn btn-primary">Submit</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+<script>
+	function compress(source_img_obj, quality, maxWidth, output_format){
+		console.log("hello");
+
+		var mime_type = "image/jpeg";
+		if(typeof output_format !== "undefined" && output_format=="png"){
+			mime_type = "image/png";
+		}
+
+		maxWidth = maxWidth || 1000;
+		var natW = source_img_obj.naturalWidth;
+		var natH = source_img_obj.naturalHeight;
+		var ratio = natH / natW;
+		if (natW > maxWidth) {
+			natW = maxWidth;
+			natH = ratio * maxWidth;
+		}
+
+		var cvs = document.createElement('canvas');
+		cvs.width = natW;
+		cvs.height = natH;
+
+		var ctx = cvs.getContext("2d").drawImage(source_img_obj, 0, 0, natW, natH);
+		var newImageData = cvs.toDataURL(mime_type, quality/100);
+		var result_image_obj = new Image();
+		result_image_obj.src = newImageData;
+		return result_image_obj;
+	}
+</script>
 </body>
 </html>

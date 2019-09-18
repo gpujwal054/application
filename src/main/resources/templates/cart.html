@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layout/default">
+<body>
+<div id="page" layout:fragment="content">
+	<form class="form-horizontal" th:object="${cart}" th:action="@{/cart}" method="post" enctype="multipart/form-data">
+		<input type="hidden" th:field="*{id}"/>
+		<input type="hidden" name="product_id" id="product_id" th:value="${product.id}"/>
+
+		<div class="form-group row">
+			<label class="col-md-2">Product Name</label>
+			<div class="col-md-5">
+				<td th:text="${product.productName}"></td>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-md-2">Product Description</label>
+			<div class="col-md-5">
+				<td th:text="${product.description}"></td>
+			</div>
+
+		</div>
+		<div class="form-group row">
+			<label class="col-md-2">Product Price(Rs.)</label>
+			<div class="col-md-5">
+				<td id="price" th:text="${product.price}"></td>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-md-2">Product Image</label>
+			<div class="col-md-5">
+				<td><img th:src="${'/images/'+product.imageName}" style="width:200px;height:150px"></td>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-md-2">Quantity</label>
+			<div class="col-md-5">
+				<input type="number" th:field="*{quantity}" id="item_quantity" placeholder="Enter your quantity">
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-md-2">Total Price</label>
+			<div class="col-md-5" id="total_price"></div>
+		</div>
+		<div th:if="${message}" th:class="${'form-group alert alert-dismissible fade show ' + alertClass}">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong th:if="${message}" th:text="${message}"></strong>
+		</div>
+		<div class="col-md-6">
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</div>
+	</form>
+</div>
+<script type="text/javascript"></script>
+<!--<script type="application/javascript" th:src="@{js/app.js}">-->
+<!--&lt;!&ndash;	$(document).ready(function(){&ndash;&gt;-->
+<!--&lt;!&ndash;		debugger;&ndash;&gt;-->
+<!--&lt;!&ndash;		$('#item_quantity').onChange(function(){&ndash;&gt;-->
+<!--&lt;!&ndash;		debugger;&ndash;&gt;-->
+<!--&lt;!&ndash;			var quantity=document.getElementById("item_quantity").value;&ndash;&gt;-->
+
+<!--&lt;!&ndash;			var price=/*[[${product.price}]]*/ 'price';&ndash;&gt;-->
+
+<!--&lt;!&ndash;			alert (price);&ndash;&gt;-->
+
+<!--&lt;!&ndash;			var total=price*quantity;&ndash;&gt;-->
+
+<!--&lt;!&ndash;			document.getElementById("total_price").innerHtml = total;&ndash;&gt;-->
+<!--&lt;!&ndash;		})&ndash;&gt;-->
+<!--&lt;!&ndash;	});&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+<!--</script>-->
+</body>
+</html>

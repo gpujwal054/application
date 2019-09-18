@@ -20,6 +20,7 @@ public class Category {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "category",cascade = CascadeType.ALL)
     private Set<Product> products = new HashSet<Product>();
 
+
     public Integer getId() {
         return id;
     }

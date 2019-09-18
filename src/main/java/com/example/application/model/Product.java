@@ -1,7 +1,6 @@
 package com.example.application.model;
 
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -14,13 +13,15 @@ public class Product {
     @Column(name = "product_id", columnDefinition = "serial")
     private Integer id;
     @NotEmpty
-    @Column(name = "product_name")
+    @Column(name = "product_name",nullable = false)
     private String productName;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
     @NotEmpty
-    @Column(name = "product_description")
+    @Column(name = "product_description",nullable = false)
     private String description;
     @Transient
     private MultipartFile[] imageUrl;
@@ -31,6 +32,18 @@ public class Product {
     private BigDecimal price;
     @Transient
     private int productCat;
+
+
+    @Column(name = "product_quantity")
+    private int productQuantity;
+
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
 
     public int getProductCat() {
         return productCat;

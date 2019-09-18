@@ -16,6 +16,7 @@
 				<th>Product Name</th>
 				<th>Description</th>
 				<th>Price</th>
+				<th>Quantity</th>
 				<th>Product Category</th>
 				<th>Image</th>
 				<th>Edit</th>
@@ -26,6 +27,7 @@
 				<td th:text="${product.productName}"></td>
 				<td th:text="${product.description}"></td>
 				<td th:text="${product.price}"></td>
+				<td th:text="${product.productQuantity}"></td>
 				<td th:text="${product.category.getCategoryName()}"></td>
 				<td><img th:src="${'/images/'+product.imageName}" style="width:150px;height:100px"></td>
 				<td><a th:href="${'/product/edit/' + product.id}">Edit</a></td>

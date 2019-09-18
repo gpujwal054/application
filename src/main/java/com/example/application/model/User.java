@@ -5,13 +5,15 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id",columnDefinition = "serial")
+    @NotNull
+    @Column(name = "user_id",columnDefinition = "serial",nullable = false)
     private Integer id;
 
     @Column(name = "user_email",unique = true,nullable = false)
@@ -51,6 +53,7 @@ public class User {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     private Role roles;
+
 
     public Integer getId() {
         return id;

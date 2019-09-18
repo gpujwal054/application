@@ -12,10 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.File;
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.ZipOutputStream;
+//
+//import static com.example.application.Application.compressImage;
+//import static com.example.application.Application.multipartToFile;
 
 @Controller
 public class ProductController {
@@ -73,6 +80,7 @@ public class ProductController {
                     modelMap.put("message", "Please select the file");
                 }
                 try {
+                    //compressImage(multipartToFile(file,file.getOriginalFilename()),new File(upload_dir + file.getOriginalFilename()),0.5f);
                     file.transferTo(new File(upload_dir + file.getOriginalFilename()));
                     fileNames.add(file.getOriginalFilename());
                     product.setImageName(file.getOriginalFilename());

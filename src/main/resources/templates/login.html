@@ -9,7 +9,7 @@
 			 th:if="${errors != null and not #lists.isEmpty(errors)}">
 			<button type="button" class="close" data-dismiss="alert">&times;</button>
 			<!--/*/ <th-block data-th-each="error : ${errors}"> /*/-->
-			<p th:text="${error}" class="m-0">|Error message here.|</p>
+			<p th:text="${error}" class="m-0">|Error userMessage here.|</p>
 			<!--/*/ </th-block> /*/-->
 		</div>
 		<div th:if="${param.error}" class="alert alert-dismissable alert-danger">
@@ -31,9 +31,9 @@
 					<input type="password" class="form-control" name="password" placeholder="Enter your password">
 				</div>
 			</div>
-			<div th:if="${message}" th:class="${'form-group alert alert-dismissible fade show ' + alertClass}">
+			<div th:if="${userMessage}" th:class="${'form-group alert alert-dismissible fade show ' + alertClass}">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
-				<strong th:if="${message}" th:text="${message}"></strong>
+				<strong th:if="${userMessage}" th:text="${userMessage}"></strong>
 			</div>
 			<div class="form-group row">
 				<label class="col-md-2"></label>

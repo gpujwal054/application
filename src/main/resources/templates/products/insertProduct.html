@@ -10,7 +10,7 @@
 	<div style="float:left;width:75%">
 		<h3 class="col-md-6" style="text-align:center">Insert into products</h3>
 		<div>
-			<form class="form-horizontal" th:object="${product}" th:action="@{/product}" method="post" enctype="multipart/form-data">
+			<form id="form" class="form-horizontal" th:object="${product}" th:action="@{/product}" method="post" enctype="multipart/form-data">
 				<input type="hidden" th:field="*{id}"/>
 				<div class="form-group">
 					<label class="col-md-6">Product Name</label>
@@ -48,7 +48,7 @@
 				<div class="form-group">
 					<label class="col-md-6">Product Image</label>
 					<div class="col-md-6">
-						<input type="file" th:field="*{imageUrl}" onchange="compress()">
+						<input type="file" data-maxwidth="620" data-maxheight="620" th:field="*{imageUrl}" id="fileinput">
 					</div>
 				</div>
 				<div th:if="${message}" th:class="${'form-group alert alert-dismissible fade show ' + alertClass}">
@@ -62,34 +62,152 @@
 		</div>
 	</div>
 </div>
-<script>
-	function compress(source_img_obj, quality, maxWidth, output_format){
-		console.log("hello");
-
-		var mime_type = "image/jpeg";
-		if(typeof output_format !== "undefined" && output_format=="png"){
-			mime_type = "image/png";
+<script type="text/javascript">
+	var fileinput = document.getElementById('fileinput');
+	var max_width = fileinput.getAttribute('data-maxwidth');
+	var max_height = fileinput.getAttribute('data-maxheight');
+	var form = document.getElementById('form');
+	
+	function processfile(file) {
+		if( !( /image/i ).test( file.type ) )
+		{
+			alert( "File "+ file.name +" is not an image." );
+			return false;
 		}
 
-		maxWidth = maxWidth || 1000;
-		var natW = source_img_obj.naturalWidth;
-		var natH = source_img_obj.naturalHeight;
-		var ratio = natH / natW;
-		if (natW > maxWidth) {
-			natW = maxWidth;
-			natH = ratio * maxWidth;
-		}
+		// read the files
+		var reader = new FileReader();
+		reader.readAsArrayBuffer(file);
 
-		var cvs = document.createElement('canvas');
-		cvs.width = natW;
-		cvs.height = natH;
+		reader.onload = function (event) {
+			// blob stuff
+			var blob = new Blob([event.target.result]); // create blob...
+			window.URL = window.URL || window.webkitURL;
+			var blobURL = window.URL.createObjectURL(blob); // and get it's URL
 
-		var ctx = cvs.getContext("2d").drawImage(source_img_obj, 0, 0, natW, natH);
-		var newImageData = cvs.toDataURL(mime_type, quality/100);
-		var result_image_obj = new Image();
-		result_image_obj.src = newImageData;
-		return result_image_obj;
+			// helper Image object
+			var image = new Image();
+			image.src = blobURL;
+			//preview.appendChild(image); // preview commented out, I am using the canvas instead
+			image.onload = function() {
+				// have to wait till it's loaded
+				var resized = resizeMe(image); // send it to canvas
+				var newinput = document.createElement("input");
+				newinput.type = 'hidden';
+				newinput.name = 'images[]';
+				newinput.value = resized; // put result from canvas into new hidden input
+				form.appendChild(newinput);
+			}
+		};
 	}
+
+	function readfiles(files) {
+
+		// remove the existing canvases and hidden inputs if user re-selects new pics
+		var existinginputs = document.getElementsByName('images[]');
+		var existingcanvases = document.getElementsByTagName('canvas');
+		while (existinginputs.length > 0) { // it's a live list so removing the first element each time
+			// DOMNode.prototype.remove = function() {this.parentNode.removeChild(this);}
+			form.removeChild(existinginputs[0]);
+			preview.removeChild(existingcanvases[0]);
+		}
+
+		for (var i = 0; i < files.length; i++) {
+			processfile(files[i]); // process each file at once
+		}
+		fileinput.value = ""; //remove the original files from fileinput
+		// TODO remove the previous hidden inputs if user selects other files
+	}
+
+	// this is where it starts. event triggered when user selects files
+	fileinput.onchange = function(){
+		if ( !( window.File && window.FileReader && window.FileList && window.Blob ) ) {
+			alert('The File APIs are not fully supported in this browser.');
+			return false;
+		}
+		readfiles(fileinput.files);
+	}
+
+	// === RESIZE ====
+
+	function resizeMe(img) {
+
+		var canvas = document.createElement('canvas');
+
+		var width = img.width;
+		var height = img.height;
+
+		// calculate the width and height, constraining the proportions
+		if (width > height) {
+			if (width > max_width) {
+				//height *= max_width / width;
+				height = Math.round(height *= max_width / width);
+				width = max_width;
+			}
+		} else {
+			if (height > max_height) {
+				//width *= max_height / height;
+				width = Math.round(width *= max_height / height);
+				height = max_height;
+			}
+		}
+
+		// resize the canvas and draw the image data into it
+		canvas.width = width;
+		canvas.height = height;
+		var ctx = canvas.getContext("2d");
+		ctx.drawImage(img, 0, 0, width, height);
+
+		preview.appendChild(canvas); // do the actual resized preview
+
+		return canvas.toDataURL("image/jpeg",0.7); // get the data from canvas as 70% JPG (can be also PNG, etc.)
+
+	}
+	// var fileReader = new FileReader();
+		// var filterType = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+		//
+		// fileReader.onload = function (event) {
+		// 	var image = new Image();
+		//
+		// 	image.onload=function(){
+		// 		//document.getElementById("original-Img").src=image.src;
+		// 		var canvas=document.createElement("canvas");
+		// 		var context=canvas.getContext("2d");
+		// 		canvas.width=image.width/4;
+		// 		canvas.height=image.height/4;
+		// 		context.drawImage(image,
+		// 				0,
+		// 				0,
+		// 				image.width,
+		// 				image.height,
+		// 				0,
+		// 				0,
+		// 				canvas.width,
+		// 				canvas.height
+		// 		);
+		//
+		// 		//document.getElementById("upload-Preview").src = canvas.toDataURL();
+		// 	}
+		// 	image.src=event.target.result;
+		// };
+		//
+		// var loadImageFile = function () {
+		// 	var uploadImage = document.getElementById("upload-Image");
+		//
+		// 	//check and retuns the length of uploded file.
+		// 	if (uploadImage.files.length === 0) {
+		// 		return;
+		// 	}
+		//
+		// 	//Is Used for validate a valid file.
+		// 	var uploadFile = document.getElementById("upload-Image").files[0];
+		// 	if (!filterType.test(uploadFile.type)) {
+		// 		alert("Please select a valid image.");
+		// 		return;
+		// 	}
+		//
+		// 	fileReader.readAsDataURL(uploadFile);
+		// }
 </script>
 </body>
 </html>

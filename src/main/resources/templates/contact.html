@@ -12,20 +12,21 @@
 		</div>
 	</div>
 	<div style="width:35%;float:right">
-		<h3>Leave your message!</h3>
-		<form>
+		<h3>Leave your Message!</h3>
+		<form th:action="@{/contact}" th:object="${contact}"  method="post">
+			<input type="hidden" id="hide">
 			<div class="form-group">
-				<label for="exampleInputEmail">Email address</label>
-				<input type="email" class="form-control" id="exampleInputEmail" placeholder="Enter email" required="" />
+				<label>Email address</label>
+				<input type="email" class="form-control" th:field="*{email}" placeholder="Enter email" required="" />
 			</div>
 			<div class="form-group">
-				<label for="exampleInputName">Name</label>
-				<input type="text" class="form-control" id="exampleInputName" placeholder="Enter name" required="" />
+				<label>Name</label>
+				<input type="text" class="form-control" th:field="*{name}" placeholder="Enter name" required="" />
 			</div>
 			<div class="form-group">
 				<label>Message</label>
 			</div>
-			<textarea type="text" rows="5" cols="50" placeholder="Enter your message"></textarea>
+			<textarea type="text" rows="5" cols="50" th:field="*{message}" placeholder="Enter your userMessage"></textarea>
 			<div class="col-md-0">
 				<button type="submit" class="btn btn-primary">Send</button>
 			</div>

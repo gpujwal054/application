@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -52,13 +51,6 @@ public class CartController {
         Cart cart = cartRepository.findByUserIdAndProductId(current_user.getId(), id);
         modelMap.put("product", product);
         modelMap.put("cart", cart == null ? new Cart() : cart);
-//        List<Cart> list = cartRepository.findCartByUserId(id);
-//        modelMap.put("cartList",list);
-//        List<Cart> carts = cartRepository.findCartByProductId(id);
-//        modelMap.put("cartList",carts);
-//        if (list.equals(carts)){
-//
-//        }
         return "cart";
     }
 
@@ -69,17 +61,9 @@ public class CartController {
         List<Cart> list = cartRepository.findByUserId(current_user.getId());
         for (int i = 0; i < list.size(); i++) {
             list.get(i).setCartProduct(productRepository.getProductById(list.get(i).getProduct_id()));
-            // list.get(i).setTotalPrice(productRepository.getProductById(list.get(i).getProduct_id()).getPrice().multiply(new BigDecimal(list.get(i).getQuantity())));
+            list.get(i).setTotalPrice(productRepository.getProductById(list.get(i).getProduct_id()).getPrice().multiply(new BigDecimal(list.get(i).getQuantity())));
         }
         modelMap.addAttribute("cartList", list);
         return "cart/showCartItems";
     }
-//    @RequestMapping(value = "/cart/show", method = RequestMethod.GET)
-//    public ModelAndView showCart(@ModelAttribute Integer id, Model model) {
-//        ModelAndView modelAndView = new ModelAndView();
-//        List<Cart> list = cartRepository.findByUserId(id);
-//        modelAndView.addObject("cartList", list);
-//        modelAndView.setViewName("showCartItems");
-//        return modelAndView;
-//    }
 }

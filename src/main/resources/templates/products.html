@@ -5,20 +5,22 @@
 <body>
 <div id="page" layout:fragment="content">
 	<div class="row">
-		<div class="col-md-3 mb-2" th:each="product : ${productList}" >
-			<div class="card h-100" style="width:18rem;" >
+		<div class="col-md-2 mb-2" th:each="product : ${productList}" >
+			<div class="card h-80" style="width:14rem;" >
 				<img th:src="${'/images/'+product.imageName}" style="width:auto;height:150px">
 				<div class="card-body">
 					<ul class="list-inline">
-						<li class="list-inline-item">
-							Name:<h6 th:text="${product.productName}"></h6>
-						</li>
-						<li class="list-inline-item">
-							Price:<h6 th:text="${product.price}"></h6>
-						</li>
+                        <h6>
+                            <span th:text="${product.productName}"></span>
+                        </h6>
+                        <a th:href="${'/cart/' + product.id}"><i class="fas fa-cart-plus"></i></a>
+                        <h6>
+                            Price:<span th:text="${product.price}"></span>
+                        </h6>
 					</ul>
-					Description:<p th:text="${product.description}" class="text-justify"></p>
-					<a th:href="${'/cart/' + product.id}" class="btn btn-primary">Add To Cart</a>
+                    <h6>
+					    Description:<p th:text="${product.description}"></p>
+                    </h6>
 				</div>
 			</div>
 		</div>

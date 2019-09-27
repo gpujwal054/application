@@ -15,20 +15,18 @@
 					<th>S.N</th>
 					<th>Category Name</th>
 					<th>Category Description</th>
-					<th>Edit</th>
-					<th>Delete</th>
+					<th>Action</th>
 				</tr>
 				<tr th:each="category,iterator : ${categoryList}">
 					<td th:text="${iterator.index+1}"></td>
 					<td th:text="${category.categoryName}"></td>
 					<td th:text="${category.categoryDesc}"></td>
-					<td><a th:href="${'/category/edit/' + category.id}">Edit</a></td>
-					<td><a th:href="${'/category/delete/' + category.id}">Delete</a></td>
+					<th scope="row"><a th:href="${'/category/edit/' + category.id}"><i class="far fa-edit"></i></a> &nbsp;&nbsp;&nbsp;<a th:href="${'/category/delete/' + category.id}"><i class="fas fa-trash"></i></a></th>
 				</tr>
 			</table>
-			<div th:if="${userMessage}" th:class="${'form-group alert alert-dismissible fade show ' + alertClass}">
+			<div th:if="${message}" th:class="${'form-group alert alert-dismissible fade show ' + alertClass}">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
-				<strong th:if="${userMessage}" th:text="${userMessage}"></strong>
+				<strong th:if="${message}" th:text="${message}"></strong>
 			</div>
 		</div>
 	</div>

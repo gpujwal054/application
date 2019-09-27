@@ -26,9 +26,9 @@
 					</div>
 
 				</div>
-				<div th:if="${userMessage}" th:class="${'form-group alert alert-dismissible fade show ' + alertClass}">
+				<div th:if="${message}" th:class="${'form-group alert alert-dismissible fade show ' + alertClass}">
 					<button type="button" class="close" data-dismiss="alert">&times;</button>
-					<strong th:if="${userMessage}" th:text="${userMessage}"></strong>
+					<strong th:if="${message}" th:text="${message}"></strong>
 				</div>
 				<div class="col-md-6">
 					<button type="submit" class="btn btn-primary">Submit</button>
